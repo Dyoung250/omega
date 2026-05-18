@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FORGIA Ω — Editor 3D</title>
+  </head>
+  <body class="bg-forge-900 text-gray-200 overflow-hidden min-h-screen">
+    <div id="root"></div>
+    <script>
+      window.onerror = function(msg, url, line, col, err) {
+        document.body.innerHTML = '<div class="p-5 bg-forge-900 text-red-400 font-mono whitespace-pre-wrap"><h2>JS Error</h2><p><b>' + msg + '</b></p><p>at ' + url + ':' + line + '</p><pre>' + (err && err.stack ? err.stack : '') + '</pre></div>';
+        return true;
+      };
+      window.addEventListener('unhandledrejection', function(e) {
+        document.body.innerHTML = '<div class="p-5 bg-forge-900 text-red-400 font-mono whitespace-pre-wrap"><h2>Unhandled Promise Rejection</h2><pre>' + (e.reason && e.reason.stack ? e.reason.stack : String(e.reason)) + '</pre></div>';
+      });
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

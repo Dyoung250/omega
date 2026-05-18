@@ -1,0 +1,22 @@
+[package]
+name = "forgia-desktop"
+version = "0.1.0"
+description = "FORGIA Ω — Editor 3D fotorealistico per fabbri"
+authors = ["Global Consulting S.R.L.S."]
+edition = "2021"
+rust-version = "1.70"
+
+[build-dependencies]
+tauri-build = { version = "2.0.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.0.0", features = [] }
+tauri-plugin-shell = "2.0.0"
+tauri-plugin-updater = "2.0.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

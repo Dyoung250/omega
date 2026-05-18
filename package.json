@@ -1,0 +1,22 @@
+{
+  "name": "forgia-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "FORGIA Ω — Editor 3D fotorealistico per fabbri",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:desktop": "npm run dev -w apps/desktop",
+    "build:desktop": "npm run build -w apps/desktop",
+    "tauri": "npm run tauri -w apps/desktop"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1"
+  }
+}
