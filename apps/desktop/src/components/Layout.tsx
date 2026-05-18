@@ -655,7 +655,6 @@ export default function Layout({ children }: LayoutProps) {
             </svg>
           </button>
 
-          <span className="text-[10px] text-gray-600">Global Consulting S.R.L.S. · FORGIA Ω v0.1.0</span>
         </div>
 
         {children}
