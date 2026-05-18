@@ -14,6 +14,7 @@ import {
 } from "../stores/libraryStore";
 import { exportScreenshot, exportGLTF, exportOBJ } from "../utils/exportManager";
 import { buildPreviewData, uploadPreview } from "../utils/exportPreview";
+import { loadDemoScene } from "../utils/demoScene";
 import { useToastStore } from "../stores/toastStore";
 import ToastContainer from "./ToastContainer";
 import AuthModal from "./AuthModal";
@@ -570,6 +571,14 @@ export default function Layout({ children }: LayoutProps) {
               </button>
             </>
           )}
+
+          <button
+            onClick={loadDemoScene}
+            className="text-[10px] px-2 py-1 rounded bg-forge-accent text-forge-900 font-medium hover:bg-forge-accent/90 transition-colors"
+            title="Carica scena dimostrativa"
+          >
+            Demo
+          </button>
 
           <div className="flex-1" />
 
