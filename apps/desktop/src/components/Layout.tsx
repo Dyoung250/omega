@@ -366,6 +366,19 @@ export default function Layout({ children }: LayoutProps) {
           <span className="text-forge-accent font-bold text-sm tracking-wide">
             FORGIA Ω
           </span>
+          <button
+            onClick={() => setShowLicenseModal(true)}
+            className={`ml-2 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
+              isExpired
+                ? "bg-red-900/30 text-red-400 hover:bg-red-900/50"
+                : isTrial
+                ? "bg-yellow-900/30 text-yellow-400 hover:bg-yellow-900/50"
+                : "bg-green-900/30 text-green-400 hover:bg-green-900/50"
+            }`}
+            title="Gestisci licenza"
+          >
+            {isLicensed ? "Pro" : isTrial ? `Trial ${trialDaysLeft}d` : "Scaduta"}
+          </button>
           <span className="ml-auto text-xs text-gray-500">v0.1.0</span>
         </div>
         <div className="px-3 py-2 border-b border-forge-700">
@@ -599,20 +612,6 @@ export default function Layout({ children }: LayoutProps) {
               </button>
             </>
           )}
-
-          <button
-            onClick={() => setShowLicenseModal(true)}
-            className={`text-[10px] px-2 py-1 rounded transition-colors ${
-              isExpired
-                ? "bg-red-900/30 text-red-400 hover:bg-red-900/50"
-                : isTrial
-                ? "bg-yellow-900/30 text-yellow-400 hover:bg-yellow-900/50"
-                : "bg-green-900/30 text-green-400 hover:bg-green-900/50"
-            }`}
-            title="Gestisci licenza"
-          >
-            {isLicensed ? "Pro" : isTrial ? `Trial ${trialDaysLeft}d` : "Scaduta"}
-          </button>
 
           {user ? (
             <div className="flex items-center gap-2">
