@@ -15,6 +15,9 @@ export interface MacroDef {
   elements: MacroElement[];
 }
 
+/** Grid layout constants: every element sits on a distinct (X,Z) cell */
+const G = 300; // grid cell size on X / Z
+
 export const MACRO_LIBRARY: MacroDef[] = [
   {
     id: "macro-cancello-completo",
@@ -22,9 +25,9 @@ export const MACRO_LIBRARY: MacroDef[] = [
     description: "Cancello singolo con pilastri laterali",
     icon: "gate",
     elements: [
+      { defId: "colonna", position: [-G, 0, 0], params: { altezza: 220 }, material: "ferro-battuto" },
       { defId: "cancello-singolo", position: [0, 0, 0], material: "ferro-battuto" },
-      { defId: "colonna", position: [-160, 0, 0], params: { altezza: 220 }, material: "ferro-battuto" },
-      { defId: "colonna", position: [160, 0, 0], params: { altezza: 220 }, material: "ferro-battuto" },
+      { defId: "colonna", position: [G, 0, 0], params: { altezza: 220 }, material: "ferro-battuto" },
     ],
   },
   {
@@ -33,13 +36,13 @@ export const MACRO_LIBRARY: MacroDef[] = [
     description: "3 pannelli recinzione con 4 pilastri",
     icon: "fence",
     elements: [
-      { defId: "pannello-recinzione", position: [0, 0, 0], material: "zincato" },
-      { defId: "pannello-recinzione", position: [260, 0, 0], material: "zincato" },
-      { defId: "pannello-recinzione", position: [520, 0, 0], material: "zincato" },
-      { defId: "colonna", position: [-130, 0, 0], params: { altezza: 200 }, material: "zincato" },
-      { defId: "colonna", position: [130, 0, 0], params: { altezza: 200 }, material: "zincato" },
-      { defId: "colonna", position: [390, 0, 0], params: { altezza: 200 }, material: "zincato" },
-      { defId: "colonna", position: [650, 0, 0], params: { altezza: 200 }, material: "zincato" },
+      { defId: "colonna", position: [-1.5 * G, 0, 0], params: { altezza: 200 }, material: "zincato" },
+      { defId: "pannello-recinzione", position: [-0.5 * G, 0, 0], material: "zincato" },
+      { defId: "colonna", position: [0.5 * G, 0, 0], params: { altezza: 200 }, material: "zincato" },
+      { defId: "pannello-recinzione", position: [1.5 * G, 0, 0], material: "zincato" },
+      { defId: "colonna", position: [2.5 * G, 0, 0], params: { altezza: 200 }, material: "zincato" },
+      { defId: "pannello-recinzione", position: [3.5 * G, 0, 0], material: "zincato" },
+      { defId: "colonna", position: [4.5 * G, 0, 0], params: { altezza: 200 }, material: "zincato" },
     ],
   },
   {
@@ -49,10 +52,10 @@ export const MACRO_LIBRARY: MacroDef[] = [
     icon: "stairs",
     elements: [
       { defId: "scala-dritta", position: [0, 0, 0], material: "ferro-lucido" },
-      { defId: "ringhiera", position: [-60, 0, 0], params: { lunghezza: 300 }, material: "ferro-lucido" },
-      { defId: "ringhiera", position: [60, 0, 0], params: { lunghezza: 300 }, material: "ferro-lucido" },
-      { defId: "corrimano", position: [-60, 110, 0], params: { lunghezza: 300 }, material: "ottone-patinato" },
-      { defId: "corrimano", position: [60, 110, 0], params: { lunghezza: 300 }, material: "ottone-patinato" },
+      { defId: "ringhiera", position: [-G, 0, 0], params: { lunghezza: 300 }, material: "ferro-lucido" },
+      { defId: "ringhiera", position: [G, 0, 0], params: { lunghezza: 300 }, material: "ferro-lucido" },
+      { defId: "corrimano", position: [-G, 110, 0], params: { lunghezza: 300 }, material: "ottone-patinato" },
+      { defId: "corrimano", position: [G, 110, 0], params: { lunghezza: 300 }, material: "ottone-patinato" },
     ],
   },
   {
@@ -62,9 +65,9 @@ export const MACRO_LIBRARY: MacroDef[] = [
     icon: "pergola",
     elements: [
       { defId: "pergola", position: [0, 0, 0], material: "ruggine-patinata" },
-      { defId: "grigliato-giardino", position: [0, 0, 160], params: { larghezza: 300 }, material: "ruggine-patinata" },
-      { defId: "fioriera", position: [-170, 0, 160], material: "vernice-nera" },
-      { defId: "fioriera", position: [170, 0, 160], material: "vernice-nera" },
+      { defId: "grigliato-giardino", position: [0, 0, G], params: { larghezza: 300 }, material: "ruggine-patinata" },
+      { defId: "fioriera", position: [-G, 0, G], material: "vernice-nera" },
+      { defId: "fioriera", position: [G, 0, G], material: "vernice-nera" },
     ],
   },
   {
@@ -74,9 +77,9 @@ export const MACRO_LIBRARY: MacroDef[] = [
     icon: "carport",
     elements: [
       { defId: "tettoia", position: [0, 0, 0], params: { larghezza: 500, profondita: 300 }, material: "zincato" },
-      { defId: "colonna", position: [-220, 0, 130], params: { altezza: 250, diametro: 15 }, material: "zincato" },
-      { defId: "colonna", position: [220, 0, 130], params: { altezza: 250, diametro: 15 }, material: "zincato" },
-      { defId: "trave", position: [0, 240, 130], params: { lunghezza: 500 }, material: "zincato" },
+      { defId: "colonna", position: [-G, 0, G], params: { altezza: 250, diametro: 15 }, material: "zincato" },
+      { defId: "colonna", position: [G, 0, G], params: { altezza: 250, diametro: 15 }, material: "zincato" },
+      { defId: "trave", position: [0, 240, G], params: { lunghezza: 500 }, material: "zincato" },
     ],
   },
   {
@@ -85,9 +88,9 @@ export const MACRO_LIBRARY: MacroDef[] = [
     description: "Lampione con lanterna e base decorativa",
     icon: "lamp",
     elements: [
+      { defId: "pannello-decorativo", position: [-G, 0, 0], params: { larghezza: 60, altezza: 10 }, material: "ferro-battuto" },
       { defId: "lampione", position: [0, 0, 0], params: { altezza: 280 }, material: "ferro-battuto" },
-      { defId: "lanterna", position: [0, 270, 0], material: "ottone-patinato" },
-      { defId: "pannello-decorativo", position: [0, 0, 0], params: { larghezza: 60, altezza: 10 }, material: "ferro-battuto" },
+      { defId: "lanterna", position: [G, 0, 0], material: "ottone-patinato" },
     ],
   },
   {
@@ -97,7 +100,7 @@ export const MACRO_LIBRARY: MacroDef[] = [
     icon: "window",
     elements: [
       { defId: "finestra-ferro", position: [0, 0, 0], material: "vernice-nera" },
-      { defId: "grata-sicurezza", position: [0, 0, 5], params: { larghezza: 120, altezza: 150 }, material: "zincato" },
+      { defId: "grata-sicurezza", position: [0, 0, G], params: { larghezza: 120, altezza: 150 }, material: "zincato" },
     ],
   },
   {
@@ -106,9 +109,9 @@ export const MACRO_LIBRARY: MacroDef[] = [
     description: "Arco con supporto insegna e insegna negozio",
     icon: "arch",
     elements: [
+      { defId: "supporto-insegna", position: [-G, 0, 0], material: "ferro-battuto" },
       { defId: "arco", position: [0, 0, 0], params: { larghezza: 300, altezza: 280 }, material: "ferro-battuto" },
-      { defId: "supporto-insegna", position: [-160, 0, 0], material: "ferro-battuto" },
-      { defId: "insegna-negozio", position: [160, 0, 0], params: { larghezza: 200, altezza: 60 }, material: "cromo-lucido" },
+      { defId: "insegna-negozio", position: [G, 0, 0], params: { larghezza: 200, altezza: 60 }, material: "cromo-lucido" },
     ],
   },
 ];
