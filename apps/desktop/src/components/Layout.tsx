@@ -261,6 +261,8 @@ export default function Layout({ children }: LayoutProps) {
 
   const [showHelp, setShowHelp] = useState(false);
   const [exportingPreview, setExportingPreview] = useState(false);
+  const [mobileLeftOpen, setMobileLeftOpen] = useState(false);
+  const [mobileRightOpen, setMobileRightOpen] = useState(false);
   const addToast = useToastStore((s) => s.addToast);
 
   const user = useAuthStore((s) => s.user);
@@ -360,9 +362,40 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className="flex h-full w-full bg-forge-900">
+    <div className="flex flex-col md:flex-row h-full w-full bg-forge-900 relative">
+      {/* Mobile Header */}
+      <header className="md:hidden h-12 bg-forge-800 border-b border-forge-600 flex items-center justify-between px-3 z-40 shrink-0">
+        <button
+          onClick={() => setMobileLeftOpen(true)}
+          className="text-gray-400 hover:text-forge-accent transition-colors p-1"
+          aria-label="Apri libreria"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <span className="text-forge-accent font-bold text-sm tracking-wide">FORGIA Ω</span>
+        <button
+          onClick={() => setMobileRightOpen(true)}
+          className="text-gray-400 hover:text-forge-accent transition-colors p-1"
+          aria-label="Apri proprietà"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 5a2 2 0 100 4m0-4a2 2 0 110 4m0 5v2m0-6V4m6 5v2m0-6V4m6 5a2 2 0 100 4m0-4a2 2 0 110 4m0 5v2m0-6V4" />
+          </svg>
+        </button>
+      </header>
+
+      {/* Mobile backdrop */}
+      {(mobileLeftOpen || mobileRightOpen) && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/60 z-40 backdrop-blur-sm"
+          onClick={() => { setMobileLeftOpen(false); setMobileRightOpen(false); }}
+        />
+      )}
+
       {/* Left Panel — Parametric Library */}
-      <aside className="w-64 flex-shrink-0 bg-forge-800 border-r border-forge-600 flex flex-col">
+      <aside className={`fixed md:relative inset-y-0 left-0 z-50 w-[85%] max-w-sm md:w-64 md:max-w-none md:z-auto flex-shrink-0 bg-forge-800 border-r border-forge-600 flex flex-col transform transition-transform duration-300 md:translate-x-0 ${mobileLeftOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="h-12 flex items-center px-4 border-b border-forge-600">
           <span className="text-forge-accent font-bold text-sm tracking-wide">
             FORGIA Ω
@@ -380,7 +413,16 @@ export default function Layout({ children }: LayoutProps) {
           >
             {isLicensed ? "Pro" : isTrial ? `Trial ${trialDaysLeft}d` : "Scaduta"}
           </button>
-          <span className="ml-auto text-xs text-gray-500">v0.1.0</span>
+          <span className="ml-auto text-xs text-gray-500 hidden md:inline">v0.1.0</span>
+          <button
+            onClick={() => setMobileLeftOpen(false)}
+            className="md:hidden ml-2 text-gray-400 hover:text-gray-200 transition-colors"
+            aria-label="Chiudi libreria"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
         <div className="px-3 py-2 border-b border-forge-700">
           <button
@@ -431,7 +473,7 @@ export default function Layout({ children }: LayoutProps) {
       {/* Center — Viewport */}
       <main className="flex-1 relative flex flex-col">
         {/* Toolbar */}
-        <div className="h-9 bg-forge-800 border-b border-forge-600 flex items-center px-3 gap-3 shrink-0">
+        <div className="h-auto min-h-[36px] md:h-9 bg-forge-800 border-b border-forge-600 flex items-center px-2 md:px-3 gap-2 md:gap-3 shrink-0 overflow-x-auto scrollbar-thin">
           {/* View Mode */}
           <div className="flex items-center gap-1 bg-forge-700 rounded p-0.5">
             <button
@@ -452,7 +494,8 @@ export default function Layout({ children }: LayoutProps) {
                   : "text-gray-400 hover:text-gray-200"
               }`}
             >
-              Vista dall'alto
+              <span className="md:hidden">2D</span>
+              <span className="hidden md:inline">Vista dall'alto</span>
             </button>
             <button
               onClick={() => setViewMode("ai-scan")}
@@ -462,7 +505,8 @@ export default function Layout({ children }: LayoutProps) {
                   : "text-gray-400 hover:text-gray-200"
               }`}
             >
-              AI Scan
+              <span className="md:hidden">AI</span>
+              <span className="hidden md:inline">AI Scan</span>
             </button>
           </div>
 
@@ -494,18 +538,20 @@ export default function Layout({ children }: LayoutProps) {
                 </button>
               </div>
 
-              <div className="w-px h-5 bg-forge-600" />
+              <div className="w-px h-5 bg-forge-600 hidden md:block" />
 
-              {/* Camera Presets */}
-              {CAMERA_PRESETS.map((preset) => (
-                <button
-                  key={preset.id}
-                  onClick={() => applyCameraPreset(preset.id)}
-                  className="px-2 py-0.5 rounded text-xs bg-forge-700 text-gray-400 border border-forge-500/30 hover:bg-forge-600 hover:text-gray-200 transition-colors"
-                >
-                  {preset.nameIt}
-                </button>
-              ))}
+              {/* Camera Presets — desktop only */}
+              <div className="hidden md:flex items-center gap-1">
+                {CAMERA_PRESETS.map((preset) => (
+                  <button
+                    key={preset.id}
+                    onClick={() => applyCameraPreset(preset.id)}
+                    className="px-2 py-0.5 rounded text-xs bg-forge-700 text-gray-400 border border-forge-500/30 hover:bg-forge-600 hover:text-gray-200 transition-colors"
+                  >
+                    {preset.nameIt}
+                  </button>
+                ))}
+              </div>
 
               <div className="w-px h-5 bg-forge-600" />
 
@@ -536,7 +582,7 @@ export default function Layout({ children }: LayoutProps) {
                 <span>Simmetria</span>
               </button>
               {mirrorEnabled && (
-                <div className="flex items-center gap-1">
+                <div className="hidden md:flex items-center gap-1">
                   <button
                     onClick={() => setMirrorAxis("x")}
                     className={`px-1.5 py-0.5 rounded text-[10px] ${
@@ -624,7 +670,7 @@ export default function Layout({ children }: LayoutProps) {
 
           {user ? (
             <div className="flex items-center gap-2">
-              <span className="text-[10px] text-gray-400">
+              <span className="hidden md:inline text-[10px] text-gray-400">
                 {profile?.display_name ?? user.email}
               </span>
               <button
@@ -668,7 +714,7 @@ export default function Layout({ children }: LayoutProps) {
         {children}
 
         {/* Bottom — Hierarchy */}
-        <div className="h-10 bg-forge-800 border-t border-forge-600 flex items-center px-3 gap-2 overflow-x-auto scrollbar-thin">
+        <div className="h-8 md:h-10 bg-forge-800 border-t border-forge-600 flex items-center px-2 md:px-3 gap-2 overflow-x-auto scrollbar-thin">
           <span className="text-xs text-gray-500 uppercase tracking-wider mr-2">Gerarchia</span>
           {objects.length === 0 && (
             <span className="text-xs text-gray-600 italic animate-fade-in">Clicca un elemento dalla libreria per aggiungere alla scena</span>
@@ -700,10 +746,19 @@ export default function Layout({ children }: LayoutProps) {
       </main>
 
       {/* Right Panel — Properties */}
-      <aside className="w-72 flex-shrink-0 bg-forge-800 border-l border-forge-600 flex flex-col">
+      <aside className={`fixed md:relative inset-y-0 right-0 z-50 w-[85%] max-w-sm md:w-72 md:max-w-none md:z-auto flex-shrink-0 bg-forge-800 border-l border-forge-600 flex flex-col transform transition-transform duration-300 md:translate-x-0 ${mobileRightOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="h-12 flex items-center px-4 border-b border-forge-600">
           <span className="text-sm font-medium text-gray-300">Proprietà</span>
-          <span className="ml-auto text-xs text-gray-500">FORGIA Ω v0.1.0</span>
+          <span className="ml-auto text-xs text-gray-500 hidden md:inline">FORGIA Ω v0.1.0</span>
+          <button
+            onClick={() => setMobileRightOpen(false)}
+            className="md:hidden ml-2 text-gray-400 hover:text-gray-200 transition-colors"
+            aria-label="Chiudi proprietà"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
         <div className="flex-1 p-4 space-y-5 overflow-y-auto scrollbar-thin">
           {selectedObj && selectedDef ? (
