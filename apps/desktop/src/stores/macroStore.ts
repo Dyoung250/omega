@@ -107,8 +107,8 @@ export const MACRO_LIBRARY: MacroDef[] = [
     icon: "arch",
     elements: [
       { defId: "arco", position: [0, 0, 0], params: { larghezza: 300, altezza: 280 }, material: "ferro-battuto" },
-      { defId: "supporto-insegna", position: [0, 260, 0], material: "ferro-battuto" },
-      { defId: "insegna-negozio", position: [0, 290, 0], params: { larghezza: 200, altezza: 60 }, material: "cromo-lucido" },
+      { defId: "supporto-insegna", position: [-160, 0, 0], material: "ferro-battuto" },
+      { defId: "insegna-negozio", position: [160, 0, 0], params: { larghezza: 200, altezza: 60 }, material: "cromo-lucido" },
     ],
   },
 ];
